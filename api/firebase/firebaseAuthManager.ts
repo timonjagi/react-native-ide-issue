@@ -7,10 +7,10 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
-import { storageAPI } from '../../../media'
+import { storageAPI } from '../../media'
 import * as authAPI from './authClient'
-import { updateUser } from '../../../users'
-import { ErrorCode } from '../../api/ErrorCode'
+import { updateUser } from '../../users'
+import { ErrorCode } from '../ErrorCode'
 
 const defaultProfilePhotoURL =
   'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg'
@@ -39,9 +39,9 @@ const validateUsernameFieldIfNeeded = (inputFields, appConfig) => {
 
 const loginWithEmailAndPassword = (email, password) => {
   return new Promise(function (resolve, _reject) {
-    authAPI.loginWithEmailAndPassword(email, password).then(response => {
+    authAPI.loginWithEmailAndPassword(email, password).then((response: any) => {
       if (!response.error) {
-        handleSuccessfulLogin({ ...response.user }, false).then(res => {
+        handleSuccessfulLogin({ ...response.user }, false).then((res: any) => {
           // Login successful, push token stored, login credential persisted, so we log the user in.
           resolve({ user: res.user })
         })
@@ -58,7 +58,7 @@ const createAccountWithEmailAndPassword = (userDetails, appConfig) => {
     return new Promise((resolve, _reject) => {
       authAPI
         .registerWithEmail(userData, appConfig.appIdentifier)
-        .then(async response => {
+        .then(async (response: any) => {
           if (response.error) {
             resolve({ error: response.error })
           } else {
@@ -106,12 +106,12 @@ const createAccountWithEmailAndPassword = (userDetails, appConfig) => {
       ...userDetails,
       profilePictureURL: defaultProfilePhotoURL,
     }
-    accountCreationTask(userData).then(response => {
+    accountCreationTask(userData).then((response: any) => {
       if (response.error) {
         resolve({ error: response.error })
       } else {
         // We signed up successfully, so we are logging the user in (as well as updating push token, persisting credential,s etc.)
-        handleSuccessfulLogin(response.user, true).then(response => {
+        handleSuccessfulLogin(response.user, true).then((response: any) => {
           resolve({
             ...response,
           })
@@ -125,7 +125,7 @@ const retrievePersistedAuthUser = () => {
   return new Promise(resolve => {
     authAPI.retrievePersistedAuthUser().then(user => {
       if (user) {
-        handleSuccessfulLogin(user, false).then(res => {
+        handleSuccessfulLogin(user, false).then((res: any) => {
           // Persisted login successful, push token stored, login credential persisted, so we log the user in.
           resolve({
             user: res.user,
@@ -141,7 +141,7 @@ const retrievePersistedAuthUser = () => {
 const sendPasswordResetEmail = email => {
   return new Promise(resolve => {
     authAPI.sendPasswordResetEmail(email)
-    resolve()
+    resolve(null)
   })
 }
 
@@ -170,7 +170,7 @@ const loginOrSignUpWithApple = appConfig => {
 
       authAPI
         .loginWithApple(identityToken, nonce, appConfig.appIdentifier)
-        .then(async response => {
+        .then(async (response: any) => {
           if (response?.user) {
             const newResponse = {
               user: { ...response.user },
@@ -179,7 +179,7 @@ const loginOrSignUpWithApple = appConfig => {
             handleSuccessfulLogin(
               newResponse.user,
               response.accountCreated,
-            ).then(response => {
+            ).then((response: any) => {
               // resolve(response);
               resolve({
                 ...response,
@@ -205,7 +205,7 @@ const loginOrSignUpWithGoogle = appConfig => {
       const { idToken } = await GoogleSignin.signIn()
       authAPI
         .loginWithGoogle(idToken, appConfig.appIdentifier)
-        .then(async response => {
+        .then(async (response: any) => {
           if (response?.user) {
             const newResponse = {
               user: { ...response.user },
@@ -214,7 +214,7 @@ const loginOrSignUpWithGoogle = appConfig => {
             handleSuccessfulLogin(
               newResponse.user,
               response.accountCreated,
-            ).then(response => {
+            ).then((response: any) => {
               // resolve(response);
               resolve({
                 ...response,
@@ -287,7 +287,7 @@ const onVerification = phone => {
 
 const loginWithSMSCode = (smsCode, verificationID) => {
   return new Promise(function (resolve, _reject) {
-    authAPI.loginWithSMSCode(smsCode, verificationID).then(response => {
+    authAPI.loginWithSMSCode(smsCode, verificationID).then((response: any) => {
       if (response.error) {
         resolve({ error: response.error })
       } else {
@@ -316,7 +316,7 @@ const registerWithPhoneNumber = (
           verificationID,
           appIdentifier,
         )
-        .then(response => {
+        .then((response: any) => {
           if (response.error) {
             resolve({ error: response.error })
           } else {
@@ -364,7 +364,7 @@ const registerWithPhoneNumber = (
       ...userDetails,
       profilePictureURL: defaultProfilePhotoURL,
     }
-    accountCreationTask(userData).then(response => {
+    accountCreationTask(userData).then((response: any) => {
       if (response.error) {
         resolve({ error: response.error })
       } else {
@@ -389,7 +389,7 @@ const handleSuccessfulLogin = (user, accountCreated) => {
 const fetchAndStoreExtraInfoUponLogin = async (user, accountCreated) => {
   authAPI.fetchAndStorePushTokenIfPossible(user)
 
-  getCurrentLocation().then(async location => {
+  getCurrentLocation().then(async (location: any) => {
     const latitude = location.coords.latitude
     const longitude = location.coords.longitude
     var locationData = {}

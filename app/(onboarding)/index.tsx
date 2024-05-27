@@ -1,14 +1,18 @@
 import React, { useCallback, useLayoutEffect } from 'react'
-import { View } from 'react-native'
-// import { useFocusEffect, useNavigation } from '@react-navigation/core'
+import { View, Text } from 'react-native'
+import { useFocusEffect, useRouter } from 'expo-router'
 import deviceStorage from '../../utils/AuthDeviceStorage'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../../redux/auth'
 import { useOnboardingConfig } from '../../hooks/useOnboardingConfig'
 import { useAuth } from '../../hooks/useAuth'
+import { HelloWave } from '../../components/HelloWave'
+import { ThemedText } from '../../components/ThemedText'
+import { ThemedView } from '../../components/ThemedView'
 
-const LoadScreen = () => {
+export default function LoadScreen(){
   // const navigation = useNavigation()
+  const router = useRouter();
 
   const dispatch = useDispatch()
   const authManager = useAuth()
@@ -21,32 +25,31 @@ const LoadScreen = () => {
   //   })
   // }, [navigation])
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     setAppState()
-  //   }, []),
-  // )
+  useFocusEffect(
+    useCallback(() => {
+      setAppState()
+    }, []),
+  )
 
   const setAppState = async () => {
-    const shouldShowOnboardingFlow =
-      await deviceStorage.getShouldShowOnboardingFlow()
+    const shouldShowOnboardingFlow = await deviceStorage.getShouldShowOnboardingFlow()
+    console.log('shouldShowOnboardingFlow', shouldShowOnboardingFlow)
     if (!shouldShowOnboardingFlow) {
       if (config?.isDelayedLoginEnabled) {
         fetchPersistedUserIfNeeded()
         return
       }
-      // navigation.navigate('LoginStack')
+      router.push('LoginScreen/LoginScreen')
     } else {
-      // navigation.navigate('Walkthrough')
+      router.push('/WalkthroughScreen/WalkthroughScreen')
     }
   }
 
   const fetchPersistedUserIfNeeded = async () => {
     if (!authManager?.retrievePersistedAuthUser) {
-      // return navigation.navigate('DelayedHome')
+      router.push('DelayedLogin/DelayedLogin')
     }
     authManager
-        // @ts-ignore
       ?.retrievePersistedAuthUser(config)
       .then(response => {
         if (response?.user) {
@@ -64,7 +67,8 @@ const LoadScreen = () => {
         // navigation.navigate('DelayedHome')
       })
   }
-  return <View />
-}
 
-export default LoadScreen
+  return (
+    <ThemedView />
+  )
+}

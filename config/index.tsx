@@ -158,7 +158,7 @@ export const ConfigProvider = ({ children }) => {
   }
 
   return (
-    <ConfigContext.Provider value={ config }> { children } </ConfigContext.Provider>
+    <ConfigContext.Provider value={ config }>{ children }</ConfigContext.Provider>
   )
 }
 

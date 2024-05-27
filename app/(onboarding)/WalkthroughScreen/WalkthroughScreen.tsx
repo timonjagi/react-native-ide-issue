@@ -6,12 +6,13 @@ import { useTheme, useTranslations } from '../../../dopebase'
 import deviceStorage from '../../../utils/AuthDeviceStorage'
 import dynamicStyles from './styles'
 import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
+import { useConfig } from '../../../config'
+import { useRouter } from 'expo-router'
 
 const WalkthroughScreen = () => {
   // const navigation = useNavigation()
-
-  const { config } = useOnboardingConfig()
-
+  const router = useRouter();
+  const config = useConfig();
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
   const styles = dynamicStyles(theme, appearance)
@@ -31,8 +32,10 @@ const WalkthroughScreen = () => {
     deviceStorage.setShouldShowOnboardingFlow('false')
     if (config?.isDelayedLoginEnabled) {
      // navigation.navigate('DelayedHome')
+     router.push('/DelayedLogin/DelayedLogin')
       return
     }
+    router.push('/WelcomeScreen/WelcomeScreen')
     // navigation.navigate('LoginStack', { screen: 'Welcome' })
   }
 

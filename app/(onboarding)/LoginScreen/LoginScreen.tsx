@@ -25,6 +25,7 @@ import { setUserData } from '../../../redux/auth'
 import { localizedErrorMessage } from '../../../api/ErrorCode'
 import { useOnboardingConfig } from '../../..//hooks/useOnboardingConfig'
 import { useAuth } from '../../../hooks/useAuth'
+import { useConfig } from '../../../config'
 
 const LoginScreen = () => {
   // const navigation = useNavigation()
@@ -33,7 +34,7 @@ const LoginScreen = () => {
 
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
-  const { config } = useOnboardingConfig()
+  const config = useConfig();
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

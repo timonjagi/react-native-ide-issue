@@ -8,12 +8,13 @@ import { MenuProvider } from 'react-native-popup-menu'
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { Provider } from 'react-redux';
-import { ConfigProvider } from '../config';
-import { TranslationProvider, DopebaseProvider, theme } from '../dopebase';
+import { ConfigProvider, useConfig } from '../config';
+import { TranslationProvider, DopebaseProvider, extendTheme } from '../dopebase';
 import { AuthProvider } from '../hooks/useAuth';
 import { authManager } from '../api'
 import translations from '../translations'
 import configureStore from '../redux/store/dev'
+import DoghouseTheme from '../theme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -21,6 +22,7 @@ SplashScreen.preventAutoHideAsync();
 const store = configureStore()
 
 export default function RootLayout() {
+  const theme = extendTheme(DoghouseTheme)
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),

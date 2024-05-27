@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { auth } from '../../core/onboarding/redux/auth'
+import { auth } from '../auth'
 
 const LOG_OUT = 'LOG_OUT'
 

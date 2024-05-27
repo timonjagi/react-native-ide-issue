@@ -1,9 +1,9 @@
 import messaging from '@react-native-firebase/messaging'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { updateUser } from '../../../users'
+import { updateUser } from '../../users'
 import { ErrorCode } from '../ErrorCode'
-import { getUnixTimeStamp } from '../../../helpers/timeFormat'
+import { getUnixTimeStamp } from '../../helpers/timeFormat'
 
 const usersRef = firestore().collection('users')
 
@@ -37,9 +37,9 @@ export const sendPasswordResetEmail = email => {
 }
 
 export const checkUniqueUsername = username => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     if (!username) {
-      resolve()
+      resolve(null)
     }
     usersRef
       .where('username', '==', username?.toLowerCase())
@@ -74,11 +74,11 @@ export const registerWithEmail = (userDetails, appIdentifier) => {
   return new Promise(function (resolve, _reject) {
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(async response => {
-        const usernameResponse = await checkUniqueUsername(username)
+      .then(async (response: any) => {
+        const usernameResponse: any = await checkUniqueUsername(username)
 
         if (usernameResponse?.taken) {
-          auth().currentUser.delete()
+          auth().currentUser?.delete()
           return resolve({ error: ErrorCode.usernameInUse })
         }
 
@@ -178,7 +178,7 @@ const signInWithCredential = (credential, appIdentifier, socialAuthType) => {
   return new Promise((resolve, _reject) => {
     auth()
       .signInWithCredential(credential)
-      .then(response => {
+      .then((response: any) => {
         const isNewUser = response.additionalUserInfo.isNewUser
         const { first_name, last_name, family_name, given_name } =
           response.additionalUserInfo.profile
@@ -285,7 +285,7 @@ export const onVerificationChanged = phone => {
 export const retrieveUserByPhone = phone => {
   return new Promise(resolve => {
     if (!phone) {
-      resolve()
+      resolve(null)
     }
     usersRef
       .where('phone', '==', phone)
@@ -364,16 +364,16 @@ export const registerWithPhoneNumber = (
   return new Promise(function (resolve, _reject) {
     auth()
       .signInWithCredential(credential)
-      .then(async response => {
-        const phoneResponse = await retrieveUserByPhone(phone)
+      .then(async (response: any) => {
+        const phoneResponse: any = await retrieveUserByPhone(phone)
         if (phoneResponse?.success) {
-          auth().currentUser.delete()
+          auth().currentUser?.delete()
           return resolve({ error: ErrorCode.phoneInUse })
         }
-        const usernameResponse = await checkUniqueUsername(username)
+        const usernameResponse: any = await checkUniqueUsername(username)
 
         if (usernameResponse?.taken) {
-          auth().currentUser.delete()
+          auth().currentUser?.delete()
           return resolve({ error: ErrorCode.usernameInUse })
         }
 
@@ -449,7 +449,7 @@ export const removeUser = userID => {
       .delete()
       .then(() => {
         auth()
-          .currentUser.delete()
+          .currentUser?.delete()
           .then(() => {
             resolve({ success: true })
           })

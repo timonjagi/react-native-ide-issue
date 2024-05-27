@@ -16,15 +16,17 @@ import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
 
 import { useAuth } from '../../../hooks/useAuth'
 import useCurrentUser from '../../../hooks/useCurrentUser'
+import { useConfig } from '../../../config'
 
 const WelcomeScreen = props => {
   const currentUser = useCurrentUser()
 
   const dispatch = useDispatch()
-  const { config } = useOnboardingConfig()
+  const config = useConfig()
 
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
+  console.log('theme: ', theme)
   const styles = dynamicStyles(theme, appearance)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -34,6 +36,7 @@ const WelcomeScreen = props => {
   const { title, caption } = props
 
   useEffect(() => {
+    console.log('trying to login')
     tryToLoginFirst()
   }, [])
 
@@ -126,11 +129,11 @@ const WelcomeScreen = props => {
           }
         />
       )}
-      <View style={styles.logo}>
+      <View style={styles?.logo}>
         <Image
           style={styles.logoImage}
           source={
-            props.delayedMode ? theme.icons.delayedLogo : theme.icons.logo
+            props.delayedMode ? theme.icons.delayedLogo : theme.icons?.logo
           }
         />
       </View>
