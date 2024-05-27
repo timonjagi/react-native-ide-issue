@@ -21,15 +21,15 @@ import dynamicStyles from './styles'
 import { setUserData } from '../../../redux/auth'
 import { localizedErrorMessage } from '../../../api/ErrorCode'
 import TermsOfUseView from '../../../components/TermsOfUseView'
-import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
 import { useAuth } from '../../../hooks/useAuth'
+import { useConfig } from '../../../config'
 
 const SignupScreen = () => {
   // const navigation = useNavigation()
   const authManager = useAuth()
   const dispatch = useDispatch()
 
-  const { config } = useOnboardingConfig()
+  const config = useConfig();
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
   const styles = dynamicStyles(theme, appearance)

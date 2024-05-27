@@ -9,16 +9,16 @@ import { useAuth } from '../../hooks/useAuth'
 import { HelloWave } from '../../components/HelloWave'
 import { ThemedText } from '../../components/ThemedText'
 import { ThemedView } from '../../components/ThemedView'
+import { useConfig } from '../../config'
 
-export default function LoadScreen(){
+ const LoadScreen = () => {
   // const navigation = useNavigation()
   const router = useRouter();
 
   const dispatch = useDispatch()
   const authManager = useAuth()
 
-  const { config } = useOnboardingConfig()
-
+  const config = useConfig();
   // useLayoutEffect(() => {
   //   navigation.setOptions({
   //     headerShown: false,
@@ -39,7 +39,7 @@ export default function LoadScreen(){
         fetchPersistedUserIfNeeded()
         return
       }
-      router.push('LoginScreen/LoginScreen')
+      router.push('SmsAuthenticationScreen/SmsAuthenticationScreen')
     } else {
       router.push('/WalkthroughScreen/WalkthroughScreen')
     }
@@ -72,3 +72,5 @@ export default function LoadScreen(){
     <ThemedView />
   )
 }
+
+export default LoadScreen;

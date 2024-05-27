@@ -6,6 +6,8 @@ export default function OnboardingLayout() {
       <Stack.Screen name='LoginScreen/LoginScreen' options={{ headerShown: true }} />
       <Stack.Screen name='DelayedLogin/DelayedLoginScreen' options={{ headerShown: true }} />
       <Stack.Screen name='WalkthroughScreen/WalkthroughScreen' options={{ headerShown: true }} />
+      <Stack.Screen name='SmsAuthenticationScreen/SmsAuthenticationScreen' options={{ headerShown: true }} />
+
     </Stack>
   );
 }

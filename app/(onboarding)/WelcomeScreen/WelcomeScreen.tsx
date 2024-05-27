@@ -12,7 +12,6 @@ import {
 import dynamicStyles from './styles'
 import { setUserData } from '../../../redux/auth'
 import { updateUser } from '../../../users'
-import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
 
 import { useAuth } from '../../../hooks/useAuth'
 import useCurrentUser from '../../../hooks/useCurrentUser'

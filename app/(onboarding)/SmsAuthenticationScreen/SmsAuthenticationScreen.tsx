@@ -32,23 +32,23 @@ import { useDispatch } from 'react-redux'
 import { localizedErrorMessage } from '../../../api/ErrorCode'
 import TermsOfUseView from '../../../components/TermsOfUseView'
 import dynamicStyles from './styles'
-// import IMGoogleSignInButton from '../../../components/IMGoogleSignInButton/IMGoogleSignInButton'
-import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
+import IMGoogleSignInButton from '../../../components/IMGoogleSignInButton/IMGoogleSignInButton'
 import { useAuth } from '../../../hooks/useAuth'
+import { router, useLocalSearchParams, useRouter } from 'expo-router'
+import { useConfig } from '../../../config'
 
 const codeInputCellCount = 6
 
 const SmsAuthenticationScreen = () => {
-  // const navigation = useNavigation()
- // const route = useRoute()
- let route: any;
+const router = useRouter();
+ const params = useLocalSearchParams()
   const {
     isSigningUp,
     isConfirmSignUpCode,
     isConfirmResetPasswordCode,
     email,
     userInfo,
-  } = route.params
+  } = params
 
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
@@ -56,8 +56,8 @@ const SmsAuthenticationScreen = () => {
   const dispatch = useDispatch()
 
   const styles = dynamicStyles(theme, appearance)
-  const { config } = useOnboardingConfig()
-
+  const config = useConfig();
+  
   const [inputFields, setInputFields] = useState({})
   const [loading, setLoading] = useState(false)
   const [isPhoneVisible, setIsPhoneVisible] = useState(
@@ -109,6 +109,7 @@ const SmsAuthenticationScreen = () => {
         //   index: 0,
         //   routes: [{ name: 'MainStack', params: { user } }],
         // })
+        router.replace('/home')
       } else {
         setLoading(false)
         Alert.alert(
@@ -134,6 +135,7 @@ const SmsAuthenticationScreen = () => {
         //   index: 0,
         //   routes: [{ name: 'MainStack', params: { user } }],
         // })
+        router.replace('/home')
       } else {
         setLoading(false)
         Alert.alert(
@@ -159,6 +161,8 @@ const SmsAuthenticationScreen = () => {
         //   index: 0,
         //   routes: [{ name: 'MainStack', params: { user } }],
         // })
+        router.replace('/home')
+
       } else {
         setLoading(false)
         Alert.alert(
@@ -231,12 +235,11 @@ const SmsAuthenticationScreen = () => {
           )
         } else {
           const user = response.user
+          console.log('user: ', user)
           dispatch(setUserData({ user }))
           Keyboard.dismiss()
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: 'MainStack', params: { user } }],
-          // })
+          router.replace('/home')
+
         }
       })
   }
@@ -308,10 +311,7 @@ const SmsAuthenticationScreen = () => {
           const user = response.user
           dispatch(setUserData({ user }))
           Keyboard.dismiss()
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: 'MainStack', params: { user } }],
-          // })
+          router.replace('(tabs)')
         }
       })
     }
@@ -479,12 +479,12 @@ const SmsAuthenticationScreen = () => {
             </TouchableOpacity>
           </>
         )}
-        {/* {config.isGoogleAuthEnabled && (
+        {config.isGoogleAuthEnabled && (
           <IMGoogleSignInButton
             containerStyle={styles.googleButtonStyle}
             onPress={onGoogleButtonPress}
           />
-        )} */}
+        )}
         {config.isAppleAuthEnabled && appleAuth.isSupported && (
           <AppleButton
             cornerRadius={25}

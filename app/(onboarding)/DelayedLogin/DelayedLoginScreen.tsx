@@ -1,10 +1,10 @@
 import React from 'react'
-import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
 import WelcomeScreen from '../WelcomeScreen/WelcomeScreen'
+import { useConfig } from '../../../config';
 
 export default function DelayedLoginScreen(props) {
   const { navigation } = props
-  const { config } = useOnboardingConfig()
+  const config = useConfig();
   return (
     <WelcomeScreen
       navigation={navigation}

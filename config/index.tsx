@@ -11,15 +11,15 @@ export const ConfigProvider = ({ children }) => {
   const config = {
     isSMSAuthEnabled: true,
     isGoogleAuthEnabled: true,
-    isAppleAuthEnabled: true,
+    isAppleAuthEnabled: false,
     isFacebookAuthEnabled: true,
     forgotPasswordEnabled: true,
-    appIdentifier: `io.instamobile.rn.${Platform.OS}`,
+    appIdentifier: `com.doghouse.ke`,
     facebookIdentifier: '285315185217069',
     webClientId:
       '1099201876026-7p9f7c1ukg55958ck45fc0bn0luilka4.apps.googleusercontent.com',
     onboardingConfig: {
-      welcomeTitle: localized('Instamobile'),
+      welcomeTitle: localized('Doghouse'),
       welcomeCaption: localized(
         'Use this codebase to start a new Firebase mobile app in minutes.',
       ),

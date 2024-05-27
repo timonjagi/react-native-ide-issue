@@ -23,9 +23,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import dynamicStyles from './styles'
 import { setUserData } from '../../../redux/auth'
 import { localizedErrorMessage } from '../../../api/ErrorCode'
-import { useOnboardingConfig } from '../../..//hooks/useOnboardingConfig'
 import { useAuth } from '../../../hooks/useAuth'
 import { useConfig } from '../../../config'
+import IMGoogleSignInButton from '../../../components/IMGoogleSignInButton/IMGoogleSignInButton'
 
 const LoginScreen = () => {
   // const navigation = useNavigation()
@@ -262,12 +262,12 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </>
         )}
-        {/* {config.isGoogleAuthEnabled && (
+        {config.isGoogleAuthEnabled && (
           <IMGoogleSignInButton
             containerStyle={styles.googleButtonStyle}
             onPress={onGoogleButtonPress}
           />
-        )} */}
+        )}
         {config.isAppleAuthEnabled && appleAuth.isSupported && (
           <AppleButton
             cornerRadius={25}

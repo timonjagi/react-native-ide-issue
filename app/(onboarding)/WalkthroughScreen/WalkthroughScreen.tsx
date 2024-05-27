@@ -5,7 +5,6 @@ import AppIntroSlider from 'react-native-app-intro-slider'
 import { useTheme, useTranslations } from '../../../dopebase'
 import deviceStorage from '../../../utils/AuthDeviceStorage'
 import dynamicStyles from './styles'
-import { useOnboardingConfig } from '../../../hooks/useOnboardingConfig'
 import { useConfig } from '../../../config'
 import { useRouter } from 'expo-router'
 
