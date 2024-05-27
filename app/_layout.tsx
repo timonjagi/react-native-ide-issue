@@ -2,13 +2,23 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-reanimated';
-
+import { MenuProvider } from 'react-native-popup-menu'
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { Provider } from 'react-redux';
+import { ConfigProvider } from '../config';
+import { TranslationProvider, DopebaseProvider, theme } from '../dopebase';
+import { AuthProvider } from '../hooks/useAuth';
+import { authManager } from '../api'
+import translations from '../translations'
+import configureStore from '../redux/store/dev'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const store = configureStore()
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -27,11 +37,26 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}>
+      <TranslationProvider translations={translations}>
+        <DopebaseProvider theme={theme}>
+          <ConfigProvider>
+            <AuthProvider authManager={authManager}>
+              <MenuProvider>
+                <ActionSheetProvider>
+                  <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                    <Stack>
+                      <Stack.Screen name='(onboarding)' options={{ headerShown: false }} />
+                      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                      <Stack.Screen name="+not-found" />
+                    </Stack>
+                  </ThemeProvider>
+                </ActionSheetProvider>
+              </MenuProvider>
+            </AuthProvider>
+          </ConfigProvider>
+        </DopebaseProvider>
+      </TranslationProvider>
+    </Provider>
   );
 }
