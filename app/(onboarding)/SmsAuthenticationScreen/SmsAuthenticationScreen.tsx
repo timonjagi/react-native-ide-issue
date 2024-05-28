@@ -109,7 +109,7 @@ const router = useRouter();
         //   index: 0,
         //   routes: [{ name: 'MainStack', params: { user } }],
         // })
-        router.replace('/home')
+        router.replace('/(tabs)')
       } else {
         setLoading(false)
         Alert.alert(
@@ -135,7 +135,7 @@ const router = useRouter();
         //   index: 0,
         //   routes: [{ name: 'MainStack', params: { user } }],
         // })
-        router.replace('/home')
+        router.replace('/(tabs)')
       } else {
         setLoading(false)
         Alert.alert(
@@ -161,7 +161,7 @@ const router = useRouter();
         //   index: 0,
         //   routes: [{ name: 'MainStack', params: { user } }],
         // })
-        router.replace('/home')
+        router.replace('/(tabs)')
 
       } else {
         setLoading(false)
@@ -238,7 +238,7 @@ const router = useRouter();
           console.log('user: ', user)
           dispatch(setUserData({ user }))
           Keyboard.dismiss()
-          router.replace('/home')
+          router.replace('/(tabs)')
 
         }
       })
@@ -250,7 +250,7 @@ const router = useRouter();
       const userValidPhoneNumber = phoneRef.current.getValue()
       setLoading(true)
       setPhoneNumber(userValidPhoneNumber)
-      if (isSigningUp) {
+      if (isSigningUp === 'true') {
         const { error } = await authManager.validateUsernameFieldIfNeeded(
           trimFields(inputFields),
           config,
@@ -292,12 +292,12 @@ const router = useRouter();
 
   const onFinishCheckingCode = newCode => {
     setLoading(true)
-    if (isSigningUp) {
+    if (isSigningUp === 'true') {
       signUpWithPhoneNumber(newCode)
       return
     }
 
-    if (!isSigningUp) {
+    if (isSigningUp === 'false') {
       authManager.loginWithSMSCode(newCode, verificationId).then(response => {
         if (response.error) {
           setLoading(false)
@@ -428,7 +428,8 @@ const router = useRouter();
             {localized('Please check your e-mail for a confirmation code.')}
           </Text>
         )}
-        {!isConfirmSignUpCode && (
+
+        {/* {!isConfirmSignUpCode && (
           <>
             <Text style={styles.orTextStyle}> {localized('OR')}</Text>
             <TouchableOpacity
@@ -440,7 +441,7 @@ const router = useRouter();
               <Text>{localized('Sign up with E-mail')}</Text>
             </TouchableOpacity>
           </>
-        )}
+        )} */}
       </>
     )
   }
@@ -494,16 +495,18 @@ const router = useRouter();
             onPress={() => onAppleButtonPress()}
           />
         )}
-        <TouchableOpacity
-          style={styles.signWithEmailContainer}
-          onPress={
-            () => {}
-            // () => navigation.navigate('Login')
-            }>
-          <Text style={styles.signWithEmailText}>
-            {localized('Sign in with E-mail')}
-          </Text>
-        </TouchableOpacity>
+{/* 
+   
+          <TouchableOpacity
+            style={styles.signWithEmailContainer}
+            onPress={
+              () => {}
+              // () => navigation.navigate('Login')
+              }>
+            <Text style={styles.signWithEmailText}>
+              {localized('Sign in with E-mail')}
+            </Text>
+          </TouchableOpacity> */}
       </>
     )
   }
@@ -514,14 +517,16 @@ const router = useRouter();
         style={{ flex: 1, width: '100%' }}
         keyboardShouldPersistTaps="always">
         <TouchableOpacity onPress={
-          () => {}
-          //() => navigation.goBack()
+          () => router.back()
           }>
           <Image style={styles.backArrowStyle} source={theme.icons.backArrow} />
         </TouchableOpacity>
-        {isSigningUp && renderAsSignUpState()}
-        {!isSigningUp && renderAsLoginState()}
-        {isSigningUp && (
+
+        {isSigningUp === 'true' && renderAsSignUpState()}
+
+        {isSigningUp === 'false' && renderAsLoginState()}
+
+        {isSigningUp === 'true' && (
           <TermsOfUseView
             tosLink={config.tosLink}
             privacyPolicyLink={config.privacyPolicyLink}

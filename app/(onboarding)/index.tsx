@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Keyboard } from 'react-native'
 import { useFocusEffect, useRouter } from 'expo-router'
 import deviceStorage from '../../utils/AuthDeviceStorage'
 import { useDispatch } from 'react-redux'
@@ -33,13 +33,12 @@ import { useConfig } from '../../config'
 
   const setAppState = async () => {
     const shouldShowOnboardingFlow = await deviceStorage.getShouldShowOnboardingFlow()
-    console.log('shouldShowOnboardingFlow', shouldShowOnboardingFlow)
     if (!shouldShowOnboardingFlow) {
       if (config?.isDelayedLoginEnabled) {
         fetchPersistedUserIfNeeded()
         return
       }
-      router.push('SmsAuthenticationScreen/SmsAuthenticationScreen')
+      router.push('/WelcomeScreen/WelcomeScreen')
     } else {
       router.push('/WalkthroughScreen/WalkthroughScreen')
     }
@@ -47,7 +46,7 @@ import { useConfig } from '../../config'
 
   const fetchPersistedUserIfNeeded = async () => {
     if (!authManager?.retrievePersistedAuthUser) {
-      router.push('DelayedLogin/DelayedLogin')
+      router.push('/WelcomeScreen/WelcomeScreen')
     }
     authManager
       ?.retrievePersistedAuthUser(config)
@@ -58,13 +57,13 @@ import { useConfig } from '../../config'
               user: response.user,
             }),
           )
-         // Keyboard.dismiss()
+         Keyboard.dismiss()
         }
-        // navigation.navigate('DelayedHome')
+        router.push('/DelayedLogin')
       })
       .catch(error => {
         console.log(error)
-        // navigation.navigate('DelayedHome')
+        router.push('/WelcomeScreen/WelcomeScreen')
       })
   }
 

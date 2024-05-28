@@ -16,16 +16,17 @@ import { updateUser } from '../../../users'
 import { useAuth } from '../../../hooks/useAuth'
 import useCurrentUser from '../../../hooks/useCurrentUser'
 import { useConfig } from '../../../config'
+import { useRouter } from 'expo-router'
 
 const WelcomeScreen = props => {
   const currentUser = useCurrentUser()
-
+  const router = useRouter();
+  
   const dispatch = useDispatch()
   const config = useConfig()
 
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
-  console.log('theme: ', theme)
   const styles = dynamicStyles(theme, appearance)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -35,8 +36,8 @@ const WelcomeScreen = props => {
   const { title, caption } = props
 
   useEffect(() => {
-    console.log('trying to login')
-    tryToLoginFirst()
+    setIsLoading(false)
+    // tryToLoginFirst()
   }, [])
 
   const handleInitialNotification = async () => {
@@ -60,9 +61,14 @@ const WelcomeScreen = props => {
   }
 
   const tryToLoginFirst = async () => {
-    authManager
-      .retrievePersistedAuthUser(config)
+    if (!authManager?.retrievePersistedAuthUser) {
+      setIsLoading(false);
+      return;
+    }
+
+    authManager?.retrievePersistedAuthUser(config)
       .then(response => {
+        console.log('res: ', response)
         if (response?.user) {
           const user = response.user
           dispatch(
@@ -76,7 +82,10 @@ const WelcomeScreen = props => {
             //   index: 0,
             //   routes: [{ name: 'AdminStack', params: { user } }],
             // })
+            router.push('/(tabs)')
           } else {
+
+            router.push('/(tabs)')
             // navigation.reset({
             //   index: 0,
             //   routes: [{ name: 'MainStack', params: { user } }],
@@ -123,8 +132,7 @@ const WelcomeScreen = props => {
           style={styles.dismissButton}
           tintColor={theme.colors[appearance].primaryForeground}
           onPress={
-            () => {}
-            //() => navigation.goBack()
+            () => router.back()
           }
         />
       )}
@@ -147,19 +155,9 @@ const WelcomeScreen = props => {
         style={styles.loginContainer}
         textStyle={styles.loginText}
         onPress={
-          () => {}
-        //   () => {
-        //   config.isSMSAuthEnabled
-        //     ? navigation.navigate('LoginStack', {
-        //       screen: 'Sms',
-        //       params: {
-        //         isSigningUp: false,
-        //       },
-        //     })
-        //     : navigation.navigate('LoginStack', {
-        //       screen: 'Login',
-        //     })
-        // }
+          () => config.isSMSAuthEnabled
+           ? router.push({pathname: '/SmsAuthenticationScreen/SmsAuthenticationScreen', params: { isSigningUp: 'false' }}) 
+           : router.push('/LoginScreen/LoginScreen')
         }>
         {localized('Log In')}
       </Button>
@@ -169,20 +167,9 @@ const WelcomeScreen = props => {
         style={styles.signupContainer}
         textStyle={styles.signupText}
         onPress={
-          () => {}
-        //   () => {
-        //   config.isSMSAuthEnabled
-        //     ? navigation.navigate('LoginStack', {
-        //       screen: 'Sms',
-        //       params: {
-        //         isSigningUp: true,
-        //       },
-        //     })
-        //     : navigation.navigate('LoginStack', {
-        //       screen: 'Signup',
-        //     })
-        // }
-        
+          () => config.isSMSAuthEnabled
+          ? router.push({pathname: '/SmsAuthenticationScreen/SmsAuthenticationScreen', params: { isSigningUp: 'true' }}) 
+          : router.push('/SignupScreen/SignupScreen')
         }>
         {localized('Sign Up')}
       </Button>

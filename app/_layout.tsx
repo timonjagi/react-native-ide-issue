@@ -47,7 +47,7 @@ export default function RootLayout() {
               <MenuProvider>
                 <ActionSheetProvider>
                   <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                    <Stack>
+                    <Stack >
                       <Stack.Screen name='(onboarding)' options={{ headerShown: false }} />
                       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                       <Stack.Screen name="+not-found" />

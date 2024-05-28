@@ -324,6 +324,8 @@ export const loginWithSMSCode = (smsCode, verificationID) => {
       .signInWithCredential(credential)
       .then(result => {
         const { user } = result
+
+        console.log('user: ', user)
         usersRef
           .doc(user.uid)
           .get()

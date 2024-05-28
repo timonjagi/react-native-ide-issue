@@ -47,7 +47,7 @@ export const ProfilePictureSelector = props => {
   const handleProfilePictureClick = url => {
     if (url) {
       const isAvatar = url.search('avatar')
-      const image = [
+      const image: any = [
         {
           source: {
             uri: url,
@@ -103,7 +103,7 @@ export const ProfilePictureSelector = props => {
 
     await getPermissionAsync()
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let result:any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       // allowsEditing: true,
       // aspect: [4, 3],
@@ -126,7 +126,7 @@ export const ProfilePictureSelector = props => {
     </TouchableOpacity>
   )
 
-  const showActionSheet = index => {
+  const showActionSheet = (index?) => {
     setSelectedPhotoIndex(index)
     showActionSheetWithOptions(
       {
