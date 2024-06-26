@@ -10,9 +10,9 @@ export const ConfigProvider = ({ children }) => {
   const { localized } = useTranslations()
   const config = {
     isSMSAuthEnabled: true,
-    isGoogleAuthEnabled: true,
+    isGoogleAuthEnabled: false,
     isAppleAuthEnabled: false,
-    isFacebookAuthEnabled: true,
+    isFacebookAuthEnabled: false,
     forgotPasswordEnabled: true,
     appIdentifier: `com.doghouse.ke`,
     facebookIdentifier: '285315185217069',

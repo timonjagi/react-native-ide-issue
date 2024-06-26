@@ -5,6 +5,7 @@ const VERTICAL_SPACING_BASE = 4
 
 const icons = {
   logo: require('../assets/images/logo.png'),
+  delayedLogo: require('../assets/images/logo.png'),
   firebase: require('../assets/icons/firebase-icon.png'),
   userAvatar: require('../assets/icons/default-avatar.jpg'),
   backArrow: require('../assets/icons/arrow-back-icon.png'),
@@ -22,7 +23,7 @@ const icons = {
 }
 
 const lightColors = {
-  primaryBackground: '#ffffff',
+  primaryBackground: '#f0f0f0',
   secondaryBackground: '#ffffff',
   primaryForeground: '#85643D',
   secondaryForeground: '#DFBD99',

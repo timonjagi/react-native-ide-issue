@@ -38,7 +38,7 @@ import { useConfig } from '../../config'
         fetchPersistedUserIfNeeded()
         return
       }
-      router.push('/WelcomeScreen')
+      router.push('/DelayedLoginScreen')
     } else {
       router.push('/WalkthroughScreen')
     }

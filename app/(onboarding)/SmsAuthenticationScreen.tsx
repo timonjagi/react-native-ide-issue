@@ -39,7 +39,8 @@ import IMGoogleSignInButton from '../../components/IMGoogleSignInButton/IMGoogle
 import { useAuth } from '../../hooks/useAuth'
 import { router, useLocalSearchParams, useRouter } from 'expo-router'
 import { useConfig } from '../../config'
-import { View as TamaguiView, XStack, Button as TamaguiButton } from 'tamagui'
+import { Text as TamaguiText, View as TamaguiView, XStack, Button as TamaguiButton, YStack, Sheet } from 'tamagui'
+import { Toast, ToastViewport, useToastController, useToastState } from '@tamagui/toast'
 
 const codeInputCellCount = 6
 
@@ -66,8 +67,8 @@ const router = useRouter();
 
   const [inputFields, setInputFields] = useState({})
   const [loading, setLoading] = useState(false)
-  const [isPhoneVisible, setIsPhoneVisible] = useState(
-    !isConfirmSignUpCode && !isConfirmResetPasswordCode,
+  const [isCodeInputVisible, setIsCodeInputVisible] = useState(
+    false
   )
   const [phoneNumber, setPhoneNumber] = useState(null as any)
   const [countriesPickerData, setCountriesPickerData] = useState(null)
@@ -75,6 +76,7 @@ const router = useRouter();
   const [profilePictureFile, setProfilePictureFile] = useState(null)
   const [countryModalVisible, setCountryModalVisible] = useState(false)
   const [codeInputValue, setCodeInputValue] = useState('')
+  const [open, setOpen] = useState(false)
 
   const myCodeInput = useBlurOnFulfill({
     //codeInputValue,
@@ -91,6 +93,8 @@ const router = useRouter();
   })
 
   const phoneRef = useRef(null as any)
+
+  // const toast = useToastController()
 
   useEffect(() => {
     if (codeInputValue?.trim()?.length === codeInputCellCount) {
@@ -184,7 +188,9 @@ const router = useRouter();
   }
 
   const signInWithPhoneNumber = userValidPhoneNumber => {
+
     setLoading(true)
+
     authManager.sendSMSToPhoneNumber(userValidPhoneNumber).then(response => {
       setLoading(false)
       const confirmationResult = response.confirmationResult
@@ -194,7 +200,10 @@ const router = useRouter();
         // @ts-ignore
         window['confirmationResult'] = confirmationResult
         setVerificationId(confirmationResult.verificationId)
-        setIsPhoneVisible(false)
+        setIsCodeInputVisible(true)
+        //setOpen(true);
+        //showToast()
+
       } else {
         // Error; SMS not sent
         Alert.alert(
@@ -206,6 +215,12 @@ const router = useRouter();
       }
     })
   }
+
+  // const showToast = () => {
+  //   toast.show(`Code sent to your phone.`, {
+  //     message: "Enter the code below to verify.",
+  //   })
+  // };
 
   const trimFields = fields => {
     var trimmedFields = {}
@@ -297,7 +312,9 @@ const router = useRouter();
   }
 
   const onFinishCheckingCode = newCode => {
+    setIsCodeInputVisible(false);
     setLoading(true)
+
     if (isSigningUp === 'true') {
       signUpWithPhoneNumber(newCode)
       return
@@ -306,6 +323,7 @@ const router = useRouter();
     if (isSigningUp === 'false') {
       authManager.loginWithSMSCode(newCode, verificationId).then(response => {
         if (response.error) {
+          setIsCodeInputVisible(true);
           setLoading(false)
           Alert.alert(
             '',
@@ -343,7 +361,7 @@ const router = useRouter();
           flagStyle={styles.flagStyle}
           textStyle={styles.phoneInputTextStyle}
           ref={phoneRef}
-          initialCountry={'+254'}
+          initialCountry={'ke'}
           onPressFlag={onPressFlag}
           offset={10}
           allowZeroAfterCountryCode
@@ -376,9 +394,7 @@ const router = useRouter();
           {localized('Send code')}
         </TamaguiButton>
 
-        {/* <TouchableOpacity style={styles.sendContainer} onPress={onPressSend}>
-          <Text style={styles.sendText}>{localized('Send code')}</Text>
-        </TouchableOpacity> */}
+
       </>
     )
   }
@@ -403,18 +419,52 @@ const router = useRouter();
 
   const renderCodeInput = () => {
     return (
-      <View style={styles.codeFieldContainer}>
-        <CodeField
-          ref={myCodeInput}
-          {...codeInputProps}
-          value={codeInputValue}
-          onChangeText={setCodeInputValue}
-          cellCount={codeInputCellCount}
-          keyboardType="number-pad"
-          textContentType="oneTimeCode"
-          renderCell={renderCodeInputCell}
+      <Sheet
+        forceRemoveScrollEnabled={open}
+        modal={true}
+        open={isCodeInputVisible}
+        snapPoints={[50]}
+     
+        dismissOnSnapToBottom
+        zIndex={100_000}
+        animation="medium"
+      >
+        <Sheet.Overlay
+          animation="lazy"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
         />
-      </View>
+        <Sheet.Handle />
+        
+        <Sheet.Frame 
+          padding="$4" 
+          justifyContent="center" 
+          alignItems="center"
+          space="$5" 
+          backgroundColor={colorSet.primaryBackground}
+        >
+            <TamaguiText color={colorSet.primaryForeground} fontSize="$4" >Enter code sent to {phoneNumber} </TamaguiText>
+            
+            <CodeField
+              ref={myCodeInput}
+              {...codeInputProps}
+              value={codeInputValue}
+              onChangeText={setCodeInputValue}
+              cellCount={codeInputCellCount}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={renderCodeInputCell}
+            />
+
+            <TouchableOpacity onPress={onPressSend}>
+              <TamaguiText color={colorSet.secondaryText}>{localized("Didn't get a code? ")}
+                <TamaguiText color={colorSet.primaryForeground} >Resend</TamaguiText>
+              </TamaguiText>
+
+            </TouchableOpacity>
+        </Sheet.Frame>
+      </Sheet>
+      
     )
   }
 
@@ -444,7 +494,8 @@ const router = useRouter();
 
         {!isConfirmSignUpCode && config.smsSignupFields.map(renderInputField)}
         
-        {isPhoneVisible ? renderPhoneInput() : renderCodeInput()}
+        { renderPhoneInput() }
+        {isCodeInputVisible && renderCodeInput()  }
 
         {isConfirmSignUpCode && (
           <Text style={styles.orTextStyle}>
@@ -485,7 +536,12 @@ const router = useRouter();
         ) : (
           <Text style={styles.title}>{localized('Login to your account')}</Text>
         )}
-        {isPhoneVisible ? renderPhoneInput() : renderCodeInput()}
+
+
+        {renderPhoneInput()}
+
+        {isCodeInputVisible && renderCodeInput() }
+
         {isConfirmResetPasswordCode && (
           <Text style={styles.orTextStyle}>
             {localized('Please check your e-mail for a confirmation code.')}
@@ -494,6 +550,7 @@ const router = useRouter();
         {config.isFacebookAuthEnabled && (
           <>
             <Text style={styles.orTextStyle}> {localized('OR')}</Text>
+
             <TouchableOpacity
               style={styles.facebookContainer}
               onPress={() => onFBButtonPress()}>
@@ -565,8 +622,36 @@ const router = useRouter();
 export default SmsAuthenticationScreen
 
 
-// const width = Dimensions.get('window').width
-// const codeInptCellWidth = width * 0.13
+// const CurrentToast = () => {
+//   const currentToast: any = useToastState()
+
+//   if (!currentToast) return null
+
+//   return (
+//     <Toast
+//       key={'121212'}
+//       duration={currentToast.duration}
+//       enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
+//       exitStyle={{ opacity: 0, scale: 1, y: -20 }}
+//       y={0}
+//       opacity={1}
+//       scale={1}
+//       animation="100ms"
+//       viewportName={currentToast.viewportName}
+//     >
+//       <YStack>
+//         <Toast.Title>{currentToast.title}</Toast.Title>
+//         {!!currentToast.message && (
+//           <Toast.Description>{currentToast.message}</Toast.Description>
+//         )}
+//       </YStack>
+//     </Toast>
+//   )
+
+// }
+
+const width = Dimensions.get('window').width
+const codeInptCellWidth = width * 0.13
 
 const dynamicStyles = (theme, colorScheme) => {
   const colorSet = theme.colors[colorScheme]
@@ -608,7 +693,7 @@ const dynamicStyles = (theme, colorScheme) => {
       color: colorSet.primaryText,
       width: '80%',
       alignSelf: 'center',
-      marginBottom: 20,
+      marginBottom: 32,
       alignItems: 'center',
       borderRadius: 9,
     },
@@ -616,7 +701,7 @@ const dynamicStyles = (theme, colorScheme) => {
     flagStyle: {
       width: 35,
       height: 25,
-      borderColor: colorSet.primaryText,
+      borderColor: colorSet.secondaryForeground7,
       borderBottomLeftRadius: 0,
       borderTopLeftRadius: 0,
       transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
@@ -656,10 +741,10 @@ const dynamicStyles = (theme, colorScheme) => {
       alignItems: 'center',
     },
     codeInputCell: {
-      width: 40,
-      height: 40,
+      width: codeInptCellWidth,
+      height: 60,
       lineHeight: 55,
-      fontSize: 26,
+      fontSize: 163,
       fontWeight: '400',
       textAlign: 'center',
       marginLeft: 8,

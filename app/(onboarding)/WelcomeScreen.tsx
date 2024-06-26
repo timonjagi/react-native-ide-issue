@@ -36,7 +36,7 @@ const WelcomeScreen = props => {
   const { title, caption } = props
 
   useEffect(() => {
-    setIsLoading(false)
+    setIsLoading(true)
     tryToLoginFirst()
   }, [])
 
@@ -212,7 +212,6 @@ const WelcomeScreen = props => {
         </TamaguiButton>
 
 
-   
         <TouchableOpacity
             style={styles.alreadyHaveAnAccountContainer}
             onPress={
@@ -222,7 +221,7 @@ const WelcomeScreen = props => {
             }>
             <Text style={styles.alreadyHaveAnAccountText}>
               {localized('Already have an account? ')}
-              <TamaguiText color={colorSet.primaryForeground} ><Link href="/LoginScreen">Login</Link></TamaguiText>
+              <TamaguiText color={colorSet.primaryForeground} >Login</TamaguiText>
             </Text>
           </TouchableOpacity> 
           

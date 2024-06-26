@@ -1,11 +1,13 @@
 import React, { memo, useEffect, useLayoutEffect, useCallback } from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { useTheme, useTranslations, TouchableIcon } from '../../dopebase'
 import useCurrentUser from '../../hooks/useCurrentUser'
 import { useAuth } from '../../hooks/useAuth'
 import { StyleSheet } from 'react-native'
 import { useNavigation, useRouter } from 'expo-router'
+import { Text, View , XStack, Button , YStack, Input, Card, Paragraph, Image, H2} from 'tamagui'
+import { MapPin, ListFilter, ArrowRight, Bell } from '@tamagui/lucide-icons'
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -17,20 +19,19 @@ export default function HomeScreen() {
   const { localized } = useTranslations()
   const { theme, appearance } = useTheme()
   //const styles = dynamicStyles(theme, appearance)
+  const colorSet = theme.colors[appearance]
 
   useLayoutEffect(() => {
-    const colorSet = theme.colors[appearance]
 
     navigation.setOptions({
       headerTitle: localized('Home'),
       headerRight: () => (
-        <View>
-          <TouchableIcon
-            imageStyle={{ tintColor: colorSet.primaryForeground }}
-            iconSource={theme.icons.logout}
-            onPress={onLogout}
-          />
-        </View>
+        <Button 
+          onPress={onLogout} 
+          chromeless 
+          icon={<Bell size="$1"/>} 
+          color={colorSet.primaryForeground} size="$4"
+        />
       ),
       headerStyle: {
         backgroundColor: colorSet.primaryBackground,
@@ -61,22 +62,92 @@ export default function HomeScreen() {
   }, [currentUser])
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Green Park</Text>
-        <Text style={styles.headerSubText}>Max Range: 500m</Text>
-      </View>
-      <ScrollView style={styles.content}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Discover your new pet</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>List your pet for adoption</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+    <View backgroundColor={colorSet.primaryBackground} flex={1}>
+      <YStack padding="$4" gap="$4">
+
+        <XStack gap="$2" >
+          <MapPin color={colorSet.primaryForeground}/>
+          <Text>{currentUser.location.latitude}, {currentUser.location.longitude}</Text>
+        </XStack>
+
+        <XStack gap="$2">
+          <Input 
+            flex={1}
+            color={colorSet.secondaryText}
+          >
+            {localized('Search by breed')}
+          </Input>
+
+          <Button 
+            size="$4" 
+            theme="active" 
+            icon={ListFilter}
+          >
+            
+          </Button>
+        </XStack>
+
+
+        <XStack gap="$4">
+          <Card  bordered flex={1} >
+            <Card.Header padded>
+              <Text   
+                color={colorSet.primaryForeground}
+                fontSize={24}
+                fontWeight="bold"
+              >Discover your new pet</Text>
+            </Card.Header>
+
+            <Card.Footer padded>
+              <XStack flex={1} />
+              <Button 
+                borderRadius="$10" 
+                icon={
+                  <ArrowRight size="$2" color={colorSet.primaryForeground}/>
+                } 
+                chromeless
+              ></Button>
+            </Card.Footer>
+
+            <Card.Background backgroundColor={colorSet.secondaryForeground} borderRadius={16} />
+          </Card>
+
+          <Card  bordered flex={1}>
+            <Card.Header padded>
+              <Text 
+                color={colorSet.secondaryForeground} 
+                fontSize={24}
+                fontWeight="bold"
+              >List your pet for adoption</Text>
+            </Card.Header>
+
+            <Card.Footer padded>
+              <XStack flex={1} />
+              <Button 
+                borderRadius="$10" 
+                icon={
+                  <ArrowRight size="$2" color={colorSet.secondaryForeground}/>
+              } 
+                chromeless
+              ></Button>
+            </Card.Footer>
+
+            <Card.Background  backgroundColor={colorSet.primaryForeground} borderRadius={16}/>
+          </Card>
+        </XStack>
+
+        <XStack>
+          <Text 
+            theme={colorSet.primaryText} 
+            fontSize={24}
+            fontWeight="bold"
+          >Breeders near you</Text>
+        </XStack>
+
+        
+      </YStack>
     </View>
+
   )
 }
 

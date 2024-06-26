@@ -56,12 +56,12 @@ export default function RootLayout() {
               <MenuProvider>
                 <ActionSheetProvider>
                   <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                  <TamaguiProvider config={tamaguiConfig} defaultTheme='dark'>
-                    <Stack>
-                      <Stack.Screen name='(onboarding)' options={{ headerShown: false }} />
-                      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                      <Stack.Screen name="+not-found" />
-                    </Stack>
+                    <TamaguiProvider config={tamaguiConfig} defaultTheme='light'>
+                      <Stack>
+                        <Stack.Screen name='(onboarding)' options={{ headerShown: false }} />
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen name="+not-found" />
+                      </Stack>
                     </TamaguiProvider>
                   </ThemeProvider>
                 </ActionSheetProvider>

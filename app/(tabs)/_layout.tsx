@@ -38,8 +38,9 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: colorSet.primaryForeground,
         headerShown: true,
+
       }}>
 
       <Tabs.Screen
@@ -49,21 +50,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
-          headerTitle: localized('Home'),
-          headerRight: () => (
-            <View>
-              <TouchableIcon
-                imageStyle={{ tintColor: colorSet.primaryForeground }}
-                iconSource={theme.icons.logout}
-                onPress={onLogout}
-              />
-            </View>
-          ),
-          headerStyle: {
-            backgroundColor: colorSet.primaryBackground,
-            borderBottomColor: colorSet.hairline,
-          },
-          headerTintColor: colorSet.primaryText,
         }}
       />
 
