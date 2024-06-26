@@ -20,7 +20,7 @@ export default function TabLayout() {
   const authManager = useAuth()
 
   const router = useRouter();
-  
+
   const onLogout = useCallback(() => {
     authManager?.logout(currentUser)
     // navigation.reset({
@@ -41,7 +41,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: true,
       }}>
-        
+
       <Tabs.Screen
         name="index"
         options={{
@@ -66,16 +66,40 @@ export default function TabLayout() {
           headerTintColor: colorSet.primaryText,
         }}
       />
-      
+
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'search' : 'search-outline'} color={color} />
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="inbox"
+        options={{
+          title: 'Inbox',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'chatbox' : 'chatbox-outline'} color={color} />
+          ),
+        }}
+      />
+
+
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
+          ),
+        }}
+      />
+
+
     </Tabs>
   );
 }

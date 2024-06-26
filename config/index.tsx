@@ -19,9 +19,9 @@ export const ConfigProvider = ({ children }) => {
     webClientId:
       '1099201876026-7p9f7c1ukg55958ck45fc0bn0luilka4.apps.googleusercontent.com',
     onboardingConfig: {
-      welcomeTitle: localized('Doghouse'),
+      welcomeTitle: localized('Your home for quality breeds'),
       welcomeCaption: localized(
-        'Use this codebase to start a new Firebase mobile app in minutes.',
+        'Discover your ideal furry companion and start a journey of love and companionship',
       ),
       walkthroughScreens: [
         {
@@ -83,22 +83,22 @@ export const ConfigProvider = ({ children }) => {
     tosLink: 'https://www.instamobile.io/eula-instachatty/',
     isUsernameFieldEnabled: false,
     smsSignupFields: [
-      {
-        displayName: localized('First Name'),
-        type: 'ascii-capable',
-        editable: true,
-        regex: regexForNames,
-        key: 'firstName',
-        placeholder: 'First Name',
-      },
-      {
-        displayName: localized('Last Name'),
-        type: 'ascii-capable',
-        editable: true,
-        regex: regexForNames,
-        key: 'lastName',
-        placeholder: 'Last Name',
-      },
+      // {
+      //   displayName: localized('First Name'),
+      //   type: 'ascii-capable',
+      //   editable: true,
+      //   regex: regexForNames,
+      //   key: 'firstName',
+      //   placeholder: 'First Name',
+      // },
+      // {
+      //   displayName: localized('Last Name'),
+      //   type: 'ascii-capable',
+      //   editable: true,
+      //   regex: regexForNames,
+      //   key: 'lastName',
+      //   placeholder: 'Last Name',
+      // },
       {
         displayName: localized('Username'),
         type: 'default',

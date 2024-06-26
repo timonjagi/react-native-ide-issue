@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
-import { View, TouchableOpacity, Image, TextInput, Text } from 'react-native'
+import { View, TouchableOpacity, Image, TextInput, Text, I18nManager, Platform, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   useTheme,
   useTranslations,
   ActivityIndicator,
   Alert,
-} from '../../../dopebase'
-import dynamicStyles from './styles'
-import { useAuth } from '../../../hooks/useAuth'
-import { localizedErrorMessage } from '../../../api/ErrorCode'
+} from '../../dopebase'
+import { useAuth } from '../../hooks/useAuth'
+import { localizedErrorMessage } from '../../api/ErrorCode'
 
 const ResetPasswordScreen = props => {
   const authManager = useAuth()
@@ -96,3 +95,60 @@ const ResetPasswordScreen = props => {
 }
 
 export default ResetPasswordScreen
+
+const dynamicStyles = (theme, colorScheme) => {
+  const colorSet = theme.colors[colorScheme]
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colorSet.primaryBackground,
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: colorSet.primaryForeground,
+      marginTop: 25,
+      marginBottom: 50,
+      alignSelf: 'stretch',
+      textAlign: 'left',
+      marginLeft: 35,
+    },
+    sendContainer: {
+      width: '70%',
+      backgroundColor: colorSet.primaryForeground,
+      borderRadius: 25,
+      padding: 10,
+      marginTop: 30,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    sendText: {
+      color: '#ffffff',
+    },
+    InputContainer: {
+      height: 42,
+      borderWidth: 1,
+      borderColor: colorSet.grey3,
+      backgroundColor: colorSet.primaryBackground,
+      paddingLeft: 10,
+      color: colorSet.primaryText,
+      width: '80%',
+      alignSelf: 'center',
+      marginTop: 20,
+      alignItems: 'center',
+      borderRadius: 25,
+    },
+    backArrowStyle: {
+      resizeMode: 'contain',
+      tintColor: colorSet.primaryForeground,
+      width: 25,
+      height: 25,
+      marginTop: Platform.OS === 'ios' ? 50 : 20,
+      marginLeft: 10,
+      transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+    },
+  })
+}
+

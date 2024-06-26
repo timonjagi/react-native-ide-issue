@@ -38,15 +38,15 @@ import { useConfig } from '../../config'
         fetchPersistedUserIfNeeded()
         return
       }
-      router.push('/WelcomeScreen/WelcomeScreen')
+      router.push('/WelcomeScreen')
     } else {
-      router.push('/WalkthroughScreen/WalkthroughScreen')
+      router.push('/WalkthroughScreen')
     }
   }
 
   const fetchPersistedUserIfNeeded = async () => {
     if (!authManager?.retrievePersistedAuthUser) {
-      router.push('/WelcomeScreen/WelcomeScreen')
+      router.push('/WelcomeScreen')
     }
     authManager
       ?.retrievePersistedAuthUser(config)
@@ -59,11 +59,11 @@ import { useConfig } from '../../config'
           )
          Keyboard.dismiss()
         }
-        router.push('/DelayedLogin')
+        router.push('(tabs)')
       })
       .catch(error => {
         console.log(error)
-        router.push('/WelcomeScreen/WelcomeScreen')
+        router.push('/WelcomeScreen')
       })
   }
 

@@ -6,6 +6,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
+  I18nManager,
+  Platform,
+  StyleSheet
 } from 'react-native'
 import PhoneInput from 'react-native-phone-input'
 import {
@@ -26,16 +30,16 @@ import {
   Alert,
   ProfilePictureSelector,
   CountriesModalPicker,
-} from '../../../dopebase'
-import { setUserData } from '../../../redux/auth'
+} from '../../dopebase'
+import { setUserData } from '../../redux/auth'
 import { useDispatch } from 'react-redux'
-import { localizedErrorMessage } from '../../../api/ErrorCode'
-import TermsOfUseView from '../../../components/TermsOfUseView'
-import dynamicStyles from './styles'
-import IMGoogleSignInButton from '../../../components/IMGoogleSignInButton/IMGoogleSignInButton'
-import { useAuth } from '../../../hooks/useAuth'
+import { localizedErrorMessage } from '../../api/ErrorCode'
+import TermsOfUseView from '../../components/TermsOfUseView'
+import IMGoogleSignInButton from '../../components/IMGoogleSignInButton/IMGoogleSignInButton'
+import { useAuth } from '../../hooks/useAuth'
 import { router, useLocalSearchParams, useRouter } from 'expo-router'
-import { useConfig } from '../../../config'
+import { useConfig } from '../../config'
+import { View as TamaguiView, XStack, Button as TamaguiButton } from 'tamagui'
 
 const codeInputCellCount = 6
 
@@ -58,6 +62,8 @@ const router = useRouter();
   const styles = dynamicStyles(theme, appearance)
   const config = useConfig();
   
+  const colorSet = theme.colors[appearance]
+
   const [inputFields, setInputFields] = useState({})
   const [loading, setLoading] = useState(false)
   const [isPhoneVisible, setIsPhoneVisible] = useState(
@@ -214,7 +220,7 @@ const router = useRouter();
   const signUpWithPhoneNumber = smsCode => {
     const userDetails = {
       ...trimFields(inputFields),
-      phone: phoneNumber?.trim(),
+      phoneNumber: phoneNumber?.trim(),
       photoFile: profilePictureFile,
     }
     authManager
@@ -307,6 +313,7 @@ const router = useRouter();
             [{ text: localized('OK') }],
             { cancelable: false },
           )
+
         } else {
           const user = response.user
           dispatch(setUserData({ user }))
@@ -336,7 +343,7 @@ const router = useRouter();
           flagStyle={styles.flagStyle}
           textStyle={styles.phoneInputTextStyle}
           ref={phoneRef}
-          initialCountry={'us'}
+          initialCountry={'+254'}
           onPressFlag={onPressFlag}
           offset={10}
           allowZeroAfterCountryCode
@@ -345,6 +352,7 @@ const router = useRouter();
             placeholderTextColor: '#aaaaaa',
           }}
         />
+
         {countriesPickerData && (
           <CountriesModalPicker
             data={countriesPickerData}
@@ -356,9 +364,21 @@ const router = useRouter();
             onCancel={onPressCancelContryModalPicker}
           />
         )}
-        <TouchableOpacity style={styles.sendContainer} onPress={onPressSend}>
+
+        <TamaguiButton 
+          theme="active" 
+          backgroundColor={colorSet.secondaryForeground} 
+          color={colorSet.primaryForeground}
+          width="80%"
+          margin="auto"
+          onPress={onPressSend}
+          >
+          {localized('Send code')}
+        </TamaguiButton>
+
+        {/* <TouchableOpacity style={styles.sendContainer} onPress={onPressSend}>
           <Text style={styles.sendText}>{localized('Send code')}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </>
     )
   }
@@ -421,11 +441,14 @@ const router = useRouter();
             setProfilePictureFile={setProfilePictureFile}
           />
         )}
+
         {!isConfirmSignUpCode && config.smsSignupFields.map(renderInputField)}
+        
         {isPhoneVisible ? renderPhoneInput() : renderCodeInput()}
+
         {isConfirmSignUpCode && (
           <Text style={styles.orTextStyle}>
-            {localized('Please check your e-mail for a confirmation code.')}
+            {localized('Please check your phone for a confirmation code.')}
           </Text>
         )}
 
@@ -460,7 +483,7 @@ const router = useRouter();
         {isConfirmResetPasswordCode ? (
           <Text style={styles.title}>{localized('Reset Password')}</Text>
         ) : (
-          <Text style={styles.title}>{localized('Sign In')}</Text>
+          <Text style={styles.title}>{localized('Login to your account')}</Text>
         )}
         {isPhoneVisible ? renderPhoneInput() : renderCodeInput()}
         {isConfirmResetPasswordCode && (
@@ -540,3 +563,164 @@ const router = useRouter();
 }
 
 export default SmsAuthenticationScreen
+
+
+// const width = Dimensions.get('window').width
+// const codeInptCellWidth = width * 0.13
+
+const dynamicStyles = (theme, colorScheme) => {
+  const colorSet = theme.colors[colorScheme]
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colorSet.primaryBackground,
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: colorSet.primaryForeground,
+      marginTop: 25,
+      marginBottom: 50,
+      alignSelf: 'stretch',
+      textAlign: 'left',
+      marginLeft: 35,
+    },
+    sendContainer: {
+      width: '70%',
+      backgroundColor: colorSet.primaryForeground,
+      borderRadius: 25,
+      padding: 10,
+      marginTop: 30,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    sendText: {
+      color: '#ffffff',
+    },
+    InputContainer: {
+      height: 48,
+      borderWidth: 1,
+      borderColor: colorSet.grey3,
+      backgroundColor: colorSet.primaryBackground,
+      paddingLeft: 10,
+      color: colorSet.primaryText,
+      width: '80%',
+      alignSelf: 'center',
+      marginBottom: 20,
+      alignItems: 'center',
+      borderRadius: 9,
+    },
+
+    flagStyle: {
+      width: 35,
+      height: 25,
+      borderColor: colorSet.primaryText,
+      borderBottomLeftRadius: 0,
+      borderTopLeftRadius: 0,
+      transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+    },
+    phoneInputTextStyle: {
+      borderLeftWidth: I18nManager.isRTL ? 0 : 1,
+      borderRightWidth: I18nManager.isRTL ? 1 : 0,
+      borderColor: colorSet.grey3,
+      height: 42,
+      fontSize: 15,
+      color: colorSet.primaryText,
+      textAlign: I18nManager.isRTL ? 'right' : 'left',
+      borderBottomRightRadius: I18nManager.isRTL ? 0 : 25,
+      borderTopRightRadius: I18nManager.isRTL ? 0 : 25,
+      borderBottomLeftRadius: I18nManager.isRTL ? 25 : 0,
+      borderTopLeftRadius: I18nManager.isRTL ? 25 : 0,
+      paddingLeft: 10,
+    },
+    input: {
+      flex: 1,
+      borderLeftWidth: 1,
+      borderRadius: 3,
+      borderColor: colorSet.grey3,
+      color: colorSet.primaryText,
+      fontSize: 24,
+      fontWeight: '700',
+      backgroundColor: colorSet.primaryBackground,
+    },
+    // code input style
+    root: {
+      padding: 20,
+      minHeight: 300,
+      alignItems: 'center',
+    },
+    codeFieldContainer: {
+      marginTop: 20,
+      alignItems: 'center',
+    },
+    codeInputCell: {
+      width: 40,
+      height: 40,
+      lineHeight: 55,
+      fontSize: 26,
+      fontWeight: '400',
+      textAlign: 'center',
+      marginLeft: 8,
+      borderRadius: 6,
+      backgroundColor: colorSet.grey3,
+    },
+    focusCell: {
+      borderColor: '#000',
+    },
+    orTextStyle: {
+      marginTop: 40,
+      marginBottom: 10,
+      alignSelf: 'center',
+      color: colorSet.primaryText,
+    },
+    facebookContainer: {
+      width: '70%',
+      backgroundColor: '#4267b2',
+      borderRadius: 25,
+      marginTop: 30,
+      alignSelf: 'center',
+      alignItems: 'center',
+      padding: 10,
+    },
+    googleButtonStyle: {
+      alignSelf: 'center',
+      marginTop: 15,
+      padding: 5,
+      elevation: 0,
+    },
+    appleButtonContainer: {
+      width: '70%',
+      height: 40,
+      marginTop: 16,
+      alignSelf: 'center',
+    },
+    facebookText: {
+      color: '#ffffff',
+      fontSize: 14,
+    },
+    signWithEmailContainer: {
+      alignItems: 'center',
+      marginTop: 20,
+    },
+    signWithEmailText: {
+      color: colorSet.primaryText,
+    },
+    tos: {
+      marginTop: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 30,
+    },
+    backArrowStyle: {
+      resizeMode: 'contain',
+      tintColor: colorSet.primaryForeground,
+      width: 25,
+      height: 25,
+      marginTop: Platform.OS === 'ios' ? 50 : 20,
+      marginLeft: 10,
+      transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+    },
+  })
+}

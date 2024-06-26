@@ -1,9 +1,9 @@
 import messaging from '@react-native-firebase/messaging'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { updateUser } from '../../users'
-import { ErrorCode } from '../ErrorCode'
-import { getUnixTimeStamp } from '../../helpers/timeFormat'
+import { updateUser } from '../../../users'
+import { ErrorCode } from '../../ErrorCode'
+import { getUnixTimeStamp } from '../../../helpers/timeFormat'
 
 const usersRef = firestore().collection('users')
 
@@ -66,7 +66,7 @@ export const registerWithEmail = (userDetails, appIdentifier) => {
     lastName,
     username,
     password,
-    phone,
+    phoneNumber,
     profilePictureURL,
     location,
     signUpLocation,
@@ -92,7 +92,7 @@ export const registerWithEmail = (userDetails, appIdentifier) => {
           firstName: firstName || '',
           lastName: lastName || '',
           username: (username || '')?.toLowerCase(),
-          phone: phone || '',
+          phoneNumber: phoneNumber || '',
           profilePictureURL,
           location: location || '',
           signUpLocation: signUpLocation || '',
@@ -193,7 +193,7 @@ const signInWithCredential = (credential, appIdentifier, socialAuthType) => {
             email: email || '',
             firstName: first_name || given_name || socialAuthType || '',
             lastName: last_name || family_name || 'User',
-            phone: phoneNumber || '',
+            phoneNumber: phoneNumber || '',
             profilePictureURL: photoURL || defaultProfilePhotoURL,
             userID: uid,
             appIdentifier,
@@ -338,6 +338,7 @@ export const loginWithSMSCode = (smsCode, verificationID) => {
             resolve({ user: userData })
           })
           .catch(function (_error) {
+
             resolve({ error: ErrorCode.serverError })
           })
       })
@@ -357,7 +358,7 @@ export const registerWithPhoneNumber = (
     firstName,
     lastName,
     username,
-    phone,
+    phoneNumber,
     profilePictureURL,
     location,
     signUpLocation,
@@ -367,7 +368,7 @@ export const registerWithPhoneNumber = (
     auth()
       .signInWithCredential(credential)
       .then(async (response: any) => {
-        const phoneResponse: any = await retrieveUserByPhone(phone)
+        const phoneResponse: any = await retrieveUserByPhone(phoneNumber)
         if (phoneResponse?.success) {
           auth().currentUser?.delete()
           return resolve({ error: ErrorCode.phoneInUse })
@@ -387,7 +388,7 @@ export const registerWithPhoneNumber = (
           firstName: firstName || '',
           lastName: lastName || '',
           username: (username || '')?.toLowerCase(),
-          phone,
+          phoneNumber,
           profilePictureURL,
           location: location || '',
           signUpLocation: signUpLocation || '',

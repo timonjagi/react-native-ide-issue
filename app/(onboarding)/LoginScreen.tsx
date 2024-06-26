@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import {
+  I18nManager,
   Image,
   Keyboard,
+  Platform,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -18,14 +21,13 @@ import {
   useTranslations,
   ActivityIndicator,
   Alert,
-} from '../../../dopebase'
+} from '../../dopebase'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import dynamicStyles from './styles'
-import { setUserData } from '../../../redux/auth'
-import { localizedErrorMessage } from '../../../api/ErrorCode'
-import { useAuth } from '../../../hooks/useAuth'
-import { useConfig } from '../../../config'
-import IMGoogleSignInButton from '../../../components/IMGoogleSignInButton/IMGoogleSignInButton'
+import { setUserData } from '../../redux/auth'
+import { localizedErrorMessage } from '../../api/ErrorCode'
+import { useAuth } from '../../hooks/useAuth'
+import { useConfig } from '../../config'
+import IMGoogleSignInButton from '../../components/IMGoogleSignInButton/IMGoogleSignInButton'
 
 const LoginScreen = () => {
   // const navigation = useNavigation()
@@ -296,3 +298,114 @@ const LoginScreen = () => {
 }
 
 export default LoginScreen
+
+
+
+const dynamicStyles = (theme, colorScheme) => {
+  const colorSet = theme.colors[colorScheme]
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      backgroundColor: colorSet.primaryBackground,
+    },
+    orTextStyle: {
+      color: colorSet.primaryText,
+      marginTop: 40,
+      marginBottom: 10,
+      alignSelf: 'center',
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: colorSet.primaryForeground,
+      marginTop: 25,
+      marginBottom: 20,
+      alignSelf: 'stretch',
+      textAlign: 'left',
+      marginLeft: 30,
+    },
+    loginContainer: {
+      width: '70%',
+      backgroundColor: colorSet.primaryForeground,
+      borderRadius: 25,
+      padding: 10,
+      marginTop: 30,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    loginText: {
+      color: '#ffffff',
+    },
+    placeholder: {
+      color: 'red',
+    },
+    InputContainer: {
+      height: 42,
+      borderWidth: 1,
+      borderColor: colorSet.grey3,
+      backgroundColor: colorSet.primaryBackground,
+      paddingLeft: 20,
+      color: colorSet.primaryText,
+      width: '80%',
+      alignSelf: 'center',
+      marginTop: 20,
+      alignItems: 'center',
+      borderRadius: 25,
+      textAlign: I18nManager.isRTL ? 'right' : 'left',
+    },
+
+    facebookContainer: {
+      width: '70%',
+      backgroundColor: '#4267B2',
+      borderRadius: 25,
+      padding: 10,
+      marginTop: 30,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    googleButtonStyle: {
+      alignSelf: 'center',
+      marginTop: 15,
+      padding: 5,
+      elevation: 0,
+    },
+    appleButtonContainer: {
+      width: '70%',
+      height: 40,
+      marginTop: 16,
+      alignSelf: 'center',
+    },
+    facebookText: {
+      color: '#ffffff',
+      fontSize: 14,
+    },
+    phoneNumberContainer: {
+      alignItems: 'center',
+      marginTop: 20,
+    },
+    phoneNumber: {
+      color: colorSet.primaryText,
+    },
+    forgotPasswordContainer: {
+      width: '80%',
+      alignSelf: 'center',
+      alignItems: 'flex-end',
+      marginTop: 8,
+    },
+    forgotPasswordText: {
+      fontSize: 14,
+      padding: 4,
+      color: colorSet.primaryText,
+    },
+    backArrowStyle: {
+      resizeMode: 'contain',
+      tintColor: colorSet.primaryForeground,
+      width: 25,
+      height: 25,
+      marginTop: Platform.OS === 'ios' ? 50 : 20,
+      marginLeft: 10,
+      transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+    },
+  })
+}

@@ -15,17 +15,26 @@ import { authManager } from '../api'
 import translations from '../translations'
 import configureStore from '../redux/store/dev'
 import DoghouseTheme from '../theme';
-
+import { TamaguiProvider, createTamagui } from 'tamagui' // or 'tamagui'
+import { config } from '@tamagui/config/v3'
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const store = configureStore()
 
+const tamaguiConfig = createTamagui(config)
+
+// make TypeScript type everything based on your config
+type Conf = typeof tamaguiConfig
+declare module '@tamagui/core' { // or 'tamagui'
+  interface TamaguiCustomConfig extends Conf {}
+}
+
 export default function RootLayout() {
   const theme = extendTheme(DoghouseTheme)
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require('../assets/fonts/Oswald-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -47,11 +56,13 @@ export default function RootLayout() {
               <MenuProvider>
                 <ActionSheetProvider>
                   <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                    <Stack >
+                  <TamaguiProvider config={tamaguiConfig} defaultTheme='dark'>
+                    <Stack>
                       <Stack.Screen name='(onboarding)' options={{ headerShown: false }} />
                       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                       <Stack.Screen name="+not-found" />
                     </Stack>
+                    </TamaguiProvider>
                   </ThemeProvider>
                 </ActionSheetProvider>
               </MenuProvider>

@@ -1,11 +1,10 @@
 import React, { useLayoutEffect } from 'react'
-import { View, Image, Text } from 'react-native'
+import { View, Image, Text, StyleSheet } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 // import { useNavigation } from '@react-navigation/core'
-import { useTheme, useTranslations } from '../../../dopebase'
-import deviceStorage from '../../../utils/AuthDeviceStorage'
-import dynamicStyles from './styles'
-import { useConfig } from '../../../config'
+import { useTheme, useTranslations } from '../../dopebase'
+import deviceStorage from '../../utils/AuthDeviceStorage'
+import { useConfig } from '../../config'
 import { useRouter } from 'expo-router'
 
 const WalkthroughScreen = () => {
@@ -31,10 +30,10 @@ const WalkthroughScreen = () => {
     deviceStorage.setShouldShowOnboardingFlow('false')
     if (config?.isDelayedLoginEnabled) {
      // navigation.navigate('DelayedHome')
-     router.push('/DelayedLogin/DelayedLogin')
+     router.push('/DelayedLogin')
       return
     }
-    router.push('/WelcomeScreen/WelcomeScreen')
+    router.push('/WelcomeScreen')
     // navigation.navigate('LoginStack', { screen: 'Welcome' })
   }
 
@@ -90,3 +89,40 @@ const WalkthroughScreen = () => {
 }
 
 export default WalkthroughScreen
+
+const dynamicStyles = (theme, colorScheme) => {
+  return StyleSheet.create({
+    title: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      paddingBottom: 25,
+      color: 'white',
+    },
+    text: {
+      fontSize: 18,
+      textAlign: 'center',
+      color: 'white',
+      paddingLeft: 10,
+      paddingRight: 10,
+    },
+    image: {
+      width: 100,
+      height: 100,
+      marginBottom: 60,
+      tintColor: 'white',
+    },
+    container: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors[colorScheme].primaryForeground,
+      height: '100%',
+      width: '100%',
+    },
+    button: {
+      fontSize: 18,
+      color: 'white',
+      marginTop: 10,
+    },
+  })
+}

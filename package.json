@@ -20,7 +20,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@gorhom/bottom-sheet": "4.4.5",
     "@invertase/react-native-apple-authentication": "^1.1.1",
-    "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.10",
@@ -32,6 +32,7 @@
     "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-native-picker/picker": "2.7.5",
     "@react-navigation/native": "^6.0.2",
+    "@tamagui/config": "^1.99.1",
     "base-64": "^0.1.0",
     "crypto-js": "^3.1.9-1",
     "expo": "^51.0.8",
@@ -97,6 +98,7 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "tamagui": "^1.99.1",
     "uuidv4": "^5.0.1"
   },
   "devDependencies": {

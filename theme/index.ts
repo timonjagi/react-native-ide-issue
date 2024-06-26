@@ -4,7 +4,7 @@ const HORIZONTAL_SPACING_BASE = Platform.OS === 'web' ? 4 : 2
 const VERTICAL_SPACING_BASE = 4
 
 const icons = {
-  logo: require('../assets/icons/rocket-icon.png'),
+  logo: require('../assets/images/logo.png'),
   firebase: require('../assets/icons/firebase-icon.png'),
   userAvatar: require('../assets/icons/default-avatar.jpg'),
   backArrow: require('../assets/icons/arrow-back-icon.png'),
@@ -24,10 +24,10 @@ const icons = {
 const lightColors = {
   primaryBackground: '#ffffff',
   secondaryBackground: '#ffffff',
-  primaryForeground: '#6546d7',
-  secondaryForeground: '#8442bd',
+  primaryForeground: '#85643D',
+  secondaryForeground: '#DFBD99',
   foregroundContrast: 'white',
-  primaryText: '#151723',
+  primaryText: '#',
   secondaryText: '#7e7e7e',
   hairline: '#e0e0e0',
   grey0: '#fafafa',

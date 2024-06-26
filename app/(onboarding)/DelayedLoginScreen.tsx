@@ -1,6 +1,6 @@
 import React from 'react'
-import WelcomeScreen from '../WelcomeScreen/WelcomeScreen'
-import { useConfig } from '../../../config';
+import WelcomeScreen from './WelcomeScreen'
+import { useConfig } from '../../config';
 
 export default function DelayedLoginScreen(props) {
   const { navigation } = props

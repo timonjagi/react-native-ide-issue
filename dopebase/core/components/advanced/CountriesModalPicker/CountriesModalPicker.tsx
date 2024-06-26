@@ -61,26 +61,28 @@ const renderOptionList = () => {
         <View style={ { paddingHorizontal: 10 } }> { options } </View>
           </ScrollView>
           </View>
-          < View style = { styles.cancelContainer } >
+          <
+            View style = { styles.cancelContainer } >
             <TouchableOpacity onPress={ () => props.onCancel() }>
               <View style={ [styles.cancelStyle, props.cancelStyle] }>
                 <Text style={ [styles.cancelTextStyle, props.cancelTextStyle] }>
                   { props.cancelText }
                   </Text>
-                  </View>
-                  </TouchableOpacity>
-                  </View>
-                  </View>
-    )
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+  )
   }
 
 const dp = (
   <Modal
-      transparent
-      ref = { modal }
-visible = { modalVisible }
-onRequestClose = { close }
-animationType = { animationType } >
+    transparent
+    ref = { modal }
+    visible = { modalVisible }
+    onRequestClose = { close }
+    animationType = { animationType }
+  >
   { renderOptionList() }
   </Modal>
   )
