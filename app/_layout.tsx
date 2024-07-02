@@ -27,7 +27,7 @@ const tamaguiConfig = createTamagui(config)
 // make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig
 declare module '@tamagui/core' { // or 'tamagui'
-  interface TamaguiCustomConfig extends Conf {}
+  interface TamaguiCustomConfig extends Conf { }
 }
 
 export default function RootLayout() {
@@ -58,8 +58,7 @@ export default function RootLayout() {
                   <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                     <TamaguiProvider config={tamaguiConfig} defaultTheme='light'>
                       <Stack>
-                        <Stack.Screen name='(onboarding)' options={{ headerShown: false }} />
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen name="index" />
                         <Stack.Screen name="+not-found" />
                       </Stack>
                     </TamaguiProvider>
